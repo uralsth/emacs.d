@@ -1517,39 +1517,39 @@ This snippet adds a hook to =org-mode= buffers so that =gunner/org-babel-tangle-
 
 ** lsp-mode
 #+begin_src emacs-lisp
-  (defun gunner/lsp-mode-setup ()
-    (setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
-    (lsp-headerline-breadcrumb-mode))
+    (defun gunner/lsp-mode-setup ()
+      (setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
+      (lsp-headerline-breadcrumb-mode))
 
-  (use-package lsp-mode
-    :custom
-    (lsp-completion-provider :none) ;; we use Corfu!
+    (use-package lsp-mode
+      :custom
+      (lsp-completion-provider :none) ;; we use Corfu!
 
-    :commands (lsp lsp-deferred)
+      :commands (lsp lsp-deferred)
 
-    :hook
-    (lsp-completion-mode . my/lsp-mode-setup-completion)
-    (lsp-mode . gunner/lsp-mode-setup)
+      :hook
+      (lsp-completion-mode . my/lsp-mode-setup-completion)
+      (lsp-mode . gunner/lsp-mode-setup)
+      (sh-mode . lsp)
+      :init
+      (defun my/orderless-dispatch-flex-first (_pattern index _total)
+        (and (eq index 0) 'orderless-flex))
 
-    :init
-    (defun my/orderless-dispatch-flex-first (_pattern index _total)
-      (and (eq index 0) 'orderless-flex))
+      (setq lsp-keymap-prefix "C-c l")  ;; Or 'C-l', 's-l'
 
-    (setq lsp-keymap-prefix "C-c l")  ;; Or 'C-l', 's-l'
+      (defun my/lsp-mode-setup-completion ()
+        (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
+              '(orderless))) ;; Configure orderless
 
-    (defun my/lsp-mode-setup-completion ()
-      (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
-            '(orderless))) ;; Configure orderless
+      ;; Optionally configure the first word as flex filtered.
+      (add-hook 'orderless-style-dispatchers #'my/orderless-dispatch-flex-first nil 'local)
 
-    ;; Optionally configure the first word as flex filtered.
-    (add-hook 'orderless-style-dispatchers #'my/orderless-dispatch-flex-first nil 'local)
+      ;; Optionally configure the cape-capf-buster.
+      (setq-local completion-at-point-functions (list (cape-capf-buster #'lsp-completion-at-point)))
 
-    ;; Optionally configure the cape-capf-buster.
-    (setq-local completion-at-point-functions (list (cape-capf-buster #'lsp-completion-at-point)))
-
-    :config
-    (lsp-enable-which-key-integration t)
-    )
+      :config
+      (lsp-enable-which-key-integration t)
+      )
 #+end_src
 
 #+RESULTS:

@@ -1248,7 +1248,7 @@ same directory as the org-buffer and insert a link to this file."
   :hook
   (lsp-completion-mode . my/lsp-mode-setup-completion)
   (lsp-mode . gunner/lsp-mode-setup)
-
+  (sh-mode . lsp)
   :init
   (defun my/orderless-dispatch-flex-first (_pattern index _total)
     (and (eq index 0) 'orderless-flex))
