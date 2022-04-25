@@ -95,6 +95,8 @@
   (straight-use-package 'django-mode)
   (straight-use-package 'django-snippets)
   (straight-use-package 'lsp-pyright)
+  (straight-use-package 'omnisharp-mode)
+  (straight-use-package 'omnisharp)
   (straight-use-package 'company)
   (straight-use-package 'company-box)
   (straight-use-package 'projectile)
