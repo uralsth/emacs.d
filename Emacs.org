@@ -1688,7 +1688,7 @@ This snippet adds a hook to =org-mode= buffers so that =gunner/org-babel-tangle-
 #+begin_src emacs-lisp
   (use-package yasnippet
     :config
-    (setq yas-snippet-dirs '("~/.emacs.d/straight/repos/yasnippet-snippets/snippets/"))
+    (setq yas-snippet-dirs '("~/.emacs.d/snippets/" "~/.emacs.d/straight/repos/yasnippet-snippets/snippets/"))
     (yas-global-mode 1))
 #+end_src
 

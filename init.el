@@ -1356,7 +1356,8 @@ same directory as the org-buffer and insert a link to this file."
 
 (use-package yasnippet
   :config
-  (setq yas-snippet-dirs '("~/.emacs.d/straight/repos/yasnippet-snippets/snippets/"))
+  (setq yas-snippet-dirs '("~/.emacs.d/straight/repos/yasnippet-snippets/snippets/"
+                           "~/.emacs.d/snippets/"))
   (yas-global-mode 1))
 
 (use-package projectile
