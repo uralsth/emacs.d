@@ -1,0 +1,15 @@
+# -*- mode: snippet -*-
+# name: django html with block title and css
+# key: ,dbtc
+# --
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>{% block title %}{% endblock %}</title>
+  <link href="{% static "${1:css_file_location}" %}" rel="stylesheet">
+</head>
+<body>
+$0
+</body>
+</html>

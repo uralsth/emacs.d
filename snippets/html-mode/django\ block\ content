@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: django block content 
+# key: ,db
+# --
+
+{% block ${1:title} %}
+$0
+{% endblock %}

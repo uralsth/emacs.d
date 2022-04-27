@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: django load static
+# key: ,dls
+# --
+
+{% load static %}
+$0

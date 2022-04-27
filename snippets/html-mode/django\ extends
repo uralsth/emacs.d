@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: django extend
+# key: ,de
+# --
+(% extends "${1:file_name}" %}
+$0

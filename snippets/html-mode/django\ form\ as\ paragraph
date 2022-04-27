@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: django form as paragraph 
+# key: ,dfp
+# --
+
+{{ form.as_p }}
+$0
