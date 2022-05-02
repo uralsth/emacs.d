@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: django if else
+# key: ,die
+# --
+{% else %}

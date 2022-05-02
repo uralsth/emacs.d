@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: django url only
+# key: ,duo
+# --
+{% url "$1" %}$0
