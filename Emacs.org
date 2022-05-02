@@ -1420,6 +1420,31 @@ This snippet adds a hook to =org-mode= buffers so that =gunner/org-babel-tangle-
 #+end_src
 
 #+RESULTS:
+
+* Corfu-doc
+#+begin_src emacs-lisp
+(use-package corfu-doc
+  ;; NOTE 2022-02-05: At the time of writing, `corfu-doc' is not yet on melpa
+  :straight t
+  :after corfu
+  :hook (corfu-mode . corfu-doc-mode)
+  :general (:keymaps 'corfu-map
+                     ;; This is a manual toggle for the documentation popup.
+                     [remap corfu-show-documentation] #'corfu-doc-toggle ; Remap the default doc command
+                     ;; Scroll in the documentation window
+                     "M-n" #'corfu-doc-scroll-up
+                     "M-p" #'corfu-doc-scroll-down)
+  :custom
+  (corfu-doc-delay 1.0)
+  (corfu-doc-max-width 30)
+  (corfu-doc-max-height 20)
+
+  ;; NOTE 2022-02-05: I've also set this in the `corfu' use-package to be
+  ;; extra-safe that this is set when corfu-doc is loaded. I do not want
+  ;; documentation shown in both the echo area and in the `corfu-doc' popup.
+  (corfu-echo-documentation t))
+
+#+end_src
 * Kind icon
 #+begin_src emacs-lisp
 (use-package kind-icon
