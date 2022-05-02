@@ -1732,7 +1732,7 @@ This snippet adds a hook to =org-mode= buffers so that =gunner/org-babel-tangle-
       "pb" 'consult-projectile-switch-to-buffer
       "pc" 'projectile-compile-project
       "pd" 'projectile-dired
-      "pd" 'consult-projectile-dired
+      "pd" 'consult-projectile-find-dir
       "pr" 'projectile-run-project
       "pv" 'projectile-run-vterm))
 
