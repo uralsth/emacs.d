@@ -84,7 +84,7 @@
 (straight-use-package 'projectile-ripgrep)
 (straight-use-package 'htmlize)
 
-(server-start)
+;; (server-start)
 
 (setq inhibit-startup-message t)
 
@@ -265,6 +265,7 @@
 
 (use-package modus-themes
   :ensure
+  :defer 0
   :init
   ;; Add all your customizations prior to loading the themes
   (setq modus-themes-italic-constructs t
@@ -375,19 +376,32 @@
 
         ;; Sample for headings:
 
-  ;;       modus-themes-headings
-  ;;       '((1 . (background overline variable-pitch 1))
-  ;;         (2 . (overline rainbow 0.6))
-  ;;         (3 . (overline 0.5))
-  ;;         (t . (monochrome)))
+        ;;       modus-themes-headings
+        ;;       '((1 . (background overline variable-pitch 1))
+        ;;         (2 . (overline rainbow 0.6))
+        ;;         (3 . (overline 0.5))
+        ;;         (t . (monochrome)))
         )
 
   ;; ;; Load the theme files before enabling a theme
   (modus-themes-load-themes)
+  :bind ("<f5>" . modus-themes-toggle)
   :config
   ;; Load the theme of your choice:
-  (modus-themes-load-vivendi)
-  :bind ("<f5>" . modus-themes-toggle))
+
+  (defun load-material-theme (frame)
+    (select-frame frame)
+    (modus-themes-load-vivendi))
+
+  (if (daemonp)
+      (add-hook 'after-make-frame-functions #'load-material-theme)
+    (modus-themes-load-vivendi)))
+
+(add-hook 'after-make-frame-functions
+          (lambda (frame)
+            (select-frame frame)
+            (unless (display-graphic-p)
+              (set-face-background 'default "unspecified-bg" (selected-frame)))))
 
 ;; Make Elisp files in that directory available to the user.
 (add-to-list 'load-path "~/.emacs.d/manual-packages/pulsar")
@@ -1085,7 +1099,7 @@ same directory as the org-buffer and insert a link to this file."
   ;; Recommended: Enable Corfu globally.
   ;; This is recommended since dabbrev can be used globally (M-/).
   :init
-  (corfu-global-mode)
+  (global-corfu-mode)
 
   :bind
   (:map corfu-map
@@ -1141,6 +1155,27 @@ same directory as the org-buffer and insert a link to this file."
   ;; Enable indentation+completion using the TAB key.
   ;; `completion-at-point' is often bound to M-TAB.
   (setq tab-always-indent 'complete))
+
+(use-package corfu-doc
+  ;; NOTE 2022-02-05: At the time of writing, `corfu-doc' is not yet on melpa
+  :straight t
+  :after corfu
+  :hook (corfu-mode . corfu-doc-mode)
+  :general (:keymaps 'corfu-map
+                     ;; This is a manual toggle for the documentation popup.
+                     [remap corfu-show-documentation] #'corfu-doc-toggle ; Remap the default doc command
+                     ;; Scroll in the documentation window
+                     "M-n" #'corfu-doc-scroll-up
+                     "M-p" #'corfu-doc-scroll-down)
+  :custom
+  (corfu-doc-delay 1.0)
+  (corfu-doc-max-width 30)
+  (corfu-doc-max-height 20)
+
+  ;; NOTE 2022-02-05: I've also set this in the `corfu' use-package to be
+  ;; extra-safe that this is set when corfu-doc is loaded. I do not want
+  ;; documentation shown in both the echo area and in the `corfu-doc' popup.
+  (corfu-echo-documentation t))
 
 (use-package kind-icon
   :after corfu
@@ -1356,8 +1391,7 @@ same directory as the org-buffer and insert a link to this file."
 
 (use-package yasnippet
   :config
-  (setq yas-snippet-dirs '("~/.emacs.d/straight/repos/yasnippet-snippets/snippets/"
-                           "~/.emacs.d/snippets/"))
+  (setq yas-snippet-dirs '("~/.emacs.d/snippets/" "~/.emacs.d/straight/repos/yasnippet-snippets/snippets/"))
   (yas-global-mode 1))
 
 (use-package projectile
@@ -1379,7 +1413,7 @@ same directory as the org-buffer and insert a link to this file."
     "pb" 'consult-projectile-switch-to-buffer
     "pc" 'projectile-compile-project
     "pd" 'projectile-dired
-    "pd" 'consult-projectile-dired
+    "pd" 'consult-projectile-find-dir
     "pr" 'projectile-run-project
     "pv" 'projectile-run-vterm))
 
@@ -1458,6 +1492,15 @@ same directory as the org-buffer and insert a link to this file."
 
 (gunner/leader-keys
   "d" '(hydra-dumb-jump/body :which-key "Dumb Jump"))
+
+(use-package hideshow
+  :hook ((prog-mode . hs-minor-mode)))
+
+(defun toggle-fold ()
+  (interactive)
+  (save-excursion
+    (end-of-line)
+    (hs-toggle-hiding)))
 
 (use-package flyspell-correct
   :bind ("C-M-," . flyspell-correct-at-point)
