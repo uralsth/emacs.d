@@ -1868,6 +1868,17 @@ This snippet adds a hook to =org-mode= buffers so that =gunner/org-babel-tangle-
     "d" '(hydra-dumb-jump/body :which-key "Dumb Jump"))
 #+end_src
 
+** Hide show mode
+#+begin_src emacs-lisp
+(use-package hideshow
+  :hook ((prog-mode . hs-minor-mode)))
+
+(defun toggle-fold ()
+  (interactive)
+  (save-excursion
+    (end-of-line)
+    (hs-toggle-hiding)))
+#+end_src
 * Word Stuff
 ** Flyspell
 
