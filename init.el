@@ -81,6 +81,8 @@
 (straight-use-package 'dabbrev)
 (straight-use-package 'ripgrep)
 (straight-use-package 'rg)
+(straight-use-package 'dart-mode)
+(straight-use-package 'lsp-dart)
 (straight-use-package 'projectile-ripgrep)
 (straight-use-package 'htmlize)
 
@@ -1286,6 +1288,8 @@ same directory as the org-buffer and insert a link to this file."
   (lsp-completion-mode . my/lsp-mode-setup-completion)
   (lsp-mode . gunner/lsp-mode-setup)
   (sh-mode . lsp)
+  (css-mode . lsp)
+  (dart-mode . lsp)
   (csharp-mode . lsp)
   :init
   (defun my/orderless-dispatch-flex-first (_pattern index _total)
@@ -1476,6 +1480,29 @@ same directory as the org-buffer and insert a link to this file."
 
 (add-hook 'c-mode-hook 'lsp)
 (add-hook 'c++-mode-hook 'lsp)
+
+;; Assuming usage with dart-mode
+(use-package dart-mode
+  :custom
+  (dart-sdk-path (concat (getenv "HOME") "/flutter/bin/cache/dark-sdk/")
+   dart-format-on-save t))
+
+(use-package hover
+  :straight  t
+  :after dart-mode
+  :bind (:map hover-minor-mode-map
+              ("C-M-z" . #'hover-run-or-hot-reload)
+              ("C-M-x" . #'hover-run-or-hot-restart)
+              ("C-M-p" . #'hover-take-screenshot))
+  :init
+  (setq hover-flutter-sdk-path (concat (getenv "HOME") "/flutter") ; remove if `flutter` is already in $PATH
+        hover-command-path (concat (getenv "GOPATH") "/bin/hover") ; remove if `hover` is already in $PATH
+        hover-hot-reload-on-save t
+        hover-screenshot-path (concat (getenv "HOME") "/Pictures")
+        hover-screenshot-prefix "my-prefix-"
+        hover-observatory-uri "http://my-custom-host:50300"
+        hover-clear-buffer-on-hot-restart t)
+  (hover-minor-mode 1))
 
 (use-package dumb-jump
   :straight t)

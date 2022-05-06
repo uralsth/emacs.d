@@ -113,6 +113,8 @@
   (straight-use-package 'dabbrev)
   (straight-use-package 'ripgrep)
   (straight-use-package 'rg)
+  (straight-use-package 'dart-mode)
+  (straight-use-package 'lsp-dart)
   (straight-use-package 'projectile-ripgrep)
   (straight-use-package 'htmlize)
 
@@ -120,7 +122,7 @@
 
 * Server Mode 
 #+begin_src emacs-lisp
-  (server-start)
+  ;; (server-start)
 #+end_src
 
 * Basic UI Configuration
@@ -915,8 +917,6 @@ This package emulates surround.vim by Tim Pope. The functionality is wrapped int
 
 ** Basic Config
 
-This section contains the basic configuration for =org-mode= plus the configuration for Org agendas and capture templates.  There's a lot to unpack in here so I'd recommend watching the videos for [[https://youtu.be/VcgjTEa0kU4][Part 5]] and [[https://youtu.be/PNE-mgkZ6HM][Part 6]] for a full explanation.
-
 #+begin_src emacs-lisp
 
   (defun gunner/org-mode-setup ()
@@ -1574,6 +1574,8 @@ This snippet adds a hook to =org-mode= buffers so that =gunner/org-babel-tangle-
       (lsp-completion-mode . my/lsp-mode-setup-completion)
       (lsp-mode . gunner/lsp-mode-setup)
       (sh-mode . lsp)
+      (css-mode . lsp)
+      (dart-mode . lsp)
       (csharp-mode . lsp)
       :init
       (defun my/orderless-dispatch-flex-first (_pattern index _total)
@@ -1849,6 +1851,31 @@ This snippet adds a hook to =org-mode= buffers so that =gunner/org-babel-tangle-
 (add-hook 'c++-mode-hook 'lsp)
 #+end_src
 
+** Dart Mode
+#+begin_src emacs-lisp
+  ;; Assuming usage with dart-mode
+  (use-package dart-mode
+    :custom
+    (dart-sdk-path (concat (getenv "HOME") "/flutter/bin/cache/dark-sdk/")
+     dart-format-on-save t))
+
+  (use-package hover
+    :straight  t
+    :after dart-mode
+    :bind (:map hover-minor-mode-map
+                ("C-M-z" . #'hover-run-or-hot-reload)
+                ("C-M-x" . #'hover-run-or-hot-restart)
+                ("C-M-p" . #'hover-take-screenshot))
+    :init
+    (setq hover-flutter-sdk-path (concat (getenv "HOME") "/flutter") ; remove if `flutter` is already in $PATH
+          hover-command-path (concat (getenv "GOPATH") "/bin/hover") ; remove if `hover` is already in $PATH
+          hover-hot-reload-on-save t
+          hover-screenshot-path (concat (getenv "HOME") "/Pictures")
+          hover-screenshot-prefix "my-prefix-"
+          hover-observatory-uri "http://my-custom-host:50300"
+          hover-clear-buffer-on-hot-restart t)
+    (hover-minor-mode 1))
+#+end_src
 ** Dumb Jump
 #+begin_src emacs-lisp
   (use-package dumb-jump
