@@ -1274,7 +1274,7 @@ same directory as the org-buffer and insert a link to this file."
   (setq pomidor-seconds (* 25 60)) ; 25 minutes for the work period
   (setq pomidor-break-seconds (* 5 60)) ; 5 minutes break time
   (setq pomidor-breaks-before-long 4) ; wait 4 short breaks before long break
-  (setq pomidor-long-break-seconds (* 20 60)) ; 20 minutes long break time
+  (setq pomidor-long-break-seconds (* 30 60)) ; 20 minutes long break time
   :hook (pomidor-mode . (lambda ()
                           (display-line-numbers-mode -1) ; Emacs 26.1+
                           (setq left-fringe-width 0 right-fringe-width 0)
