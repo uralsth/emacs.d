@@ -1289,9 +1289,8 @@ same directory as the org-buffer and insert a link to this file."
 (use-package lsp-mode
   :custom
   (lsp-completion-provider :none) ;; we use Corfu!
-
+  (lsp-enable-snippet t)
   :commands (lsp lsp-deferred)
-
   :hook
   (lsp-completion-mode . my/lsp-mode-setup-completion)
   (lsp-mode . gunner/lsp-mode-setup)
