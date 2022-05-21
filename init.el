@@ -989,6 +989,14 @@ same directory as the org-buffer and insert a link to this file."
    org-pomodoro-clock-break t)
   (setq alert-user-configuration (quote ((((:category . "org-pomodoro")) libnotify nil)))))
 
+(use-package evil-org
+  :straight t
+  :after org
+  :hook (org-mode . (lambda () evil-org-mode))
+  :config
+  (require 'evil-org-agenda)
+  (evil-org-agenda-set-keys))
+
 (use-package org-roam
   :straight t
   :init
