@@ -684,6 +684,16 @@ targets."
 (gunner/leader-keys
   "s" '(hydra-scale-text/body :which-key "Text Scaling"))
 
+(defhydra hydra-hide-show (:color red)
+  ("s" hs-show-block "hs show block" :column "Hide Show")
+  ("h" hs-hide-block "hs hide block")
+  ("H" hs-hide-all "hs hide all")
+  ("S" hs-show-all "hs show all")
+  ("q" nil "quit menu" :color blue :column nil))
+
+(gunner/leader-keys
+  "h" '(hydra-hide-show/body :which-key "Hide Show Mode"))
+
 ;; frame step forward
 (with-eval-after-load 'mpv
   (defun mpv-frame-step ()
@@ -1530,7 +1540,8 @@ same directory as the org-buffer and insert a link to this file."
   "d" '(hydra-dumb-jump/body :which-key "Dumb Jump"))
 
 (use-package hideshow
-  :hook ((prog-mode . hs-minor-mode)))
+  :hook ((prog-mode . hs-minor-mode)
+         (lsp-mode . hs-minor-mode)))
 
 (defun toggle-fold ()
   (interactive)
