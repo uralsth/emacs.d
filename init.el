@@ -59,6 +59,7 @@
 (straight-use-package 'lsp-mode)
 (straight-use-package 'lsp-treemacs)
 (straight-use-package 'dap-mode)
+;; (straight-use-package 'dap-netcore)
 (straight-use-package 'pyvenv)
 (straight-use-package 'django-mode)
 (straight-use-package 'django-snippets)
@@ -1348,6 +1349,8 @@ same directory as the org-buffer and insert a link to this file."
   :config
   ;; Set up Node debugging
   (require 'dap-node)
+  (require 'dap-netcore)
+  (setq dap-netcore-install-dir (executable-find "netcoredbg"))
   (dap-node-setup) ;; Automatically installs Node debug adapter if needed
 
   ;; Bind `C-c l d` to `dap-hydra` for easy access
