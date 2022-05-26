@@ -1357,7 +1357,8 @@ same directory as the org-buffer and insert a link to this file."
   (general-define-key
    :keymaps 'lsp-mode-map
    :prefix lsp-keymap-prefix
-   "d" '(dap-hydra t :wk "debugger")))
+   "d" '(dap-hydra t :wk "debugger"))
+  )
 
 (use-package python-mode
   :straight t

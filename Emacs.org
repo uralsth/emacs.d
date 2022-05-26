@@ -1669,7 +1669,8 @@ This snippet adds a hook to =org-mode= buffers so that =gunner/org-babel-tangle-
       (general-define-key
        :keymaps 'lsp-mode-map
        :prefix lsp-keymap-prefix
-       "d" '(dap-hydra t :wk "debugger")))
+       "d" '(dap-hydra t :wk "debugger"))
+      )
 
 
 #+end_src
