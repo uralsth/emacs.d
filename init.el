@@ -1544,7 +1544,9 @@ same directory as the org-buffer and insert a link to this file."
 
 (use-package hideshow
   :hook ((prog-mode . hs-minor-mode)
-         (lsp-mode . hs-minor-mode)))
+         (lsp-mode . hs-minor-mode))
+  :bind ("<f5>" . toggle-fold)
+  )
 
 (defun toggle-fold ()
   (interactive)
