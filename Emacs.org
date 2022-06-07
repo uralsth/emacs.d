@@ -2402,33 +2402,35 @@ For more thoughts on Eshell, check out these articles by Pierre Neidhardt:
 #+begin_src emacs-lisp
 
 
-  (setq telega-use-images 't)
-  (setq telega-emoji-use-images t)
+      (setq telega-use-images 't)
+      (setq telega-emoji-use-images t)
 
-  (use-package telega
-    :init
-    (setq emojify-mode t)
-    :defer 6
-    :load-path  "~/telega.el"
-    :commands (telega)
-    :config
-    (setq telega-filter-button-width 20)
-    ;; ("\\.pdf\\'" . default) is already member in `org-file-apps'
-    ;; Use "xdg-open" to open files by default
-    (setq telega-completing-read-function 'completing-read)
-    (setcdr (assq t org-file-apps-gnu) 'browse-url-xdg-open)
-    (setq telega-open-file-function 'org-open-file)
-    )
-  ;; (setq telega-user-use-avatars nil
-  ;; telega-use-tracking-for '(any pin unread)
-  ;; telega-chat-use-markdown-formatting t
-  ;; telega-completing-read-function #'ivy-completing-read
-  ;; telega-msg-rainbow-title nil
-  ;; telega-chat-fill-column 75)
-  ;; (add-hook 'after-init-hook #'global-emojify-mode)
-  (add-hook 'telega-load-hook
-            (lambda ()
-              (define-key global-map (kbd "C-c t") telega-prefix-map)))
+      (use-package telega
+        :init
+        (setq emojify-mode t)
+        :defer 6
+        :load-path  "~/telega.el"
+        :commands (telega)
+        :config
+        (setq telega-filter-button-width 20)
+        ;; ("\\.pdf\\'" . default) is already member in `org-file-apps'
+        ;; Use "xdg-open" to open files by default
+        (setq telega-completing-read-function 'completing-read)
+        (setcdr (assq t org-file-apps-gnu) 'browse-url-xdg-open)
+        (setq telega-open-file-function 'org-open-file)
+        )
+      ;; (setq telega-user-use-avatars nil
+      ;; telega-use-tracking-for '(any pin unread)
+      ;; telega-chat-use-markdown-formatting t
+      ;; telega-completing-read-function #'ivy-completing-read
+      ;; telega-msg-rainbow-title nil
+      ;; telega-chat-fill-column 75)
+      ;; (add-hook 'after-init-hook #'global-emojify-mode)
+      (add-hook 'telega-load-hook
+                (lambda ()
+                  (define-key global-map (kbd "C-c t") telega-prefix-map)
+                  (telega-mode-line-mode)
+                  (telega-notifications-mode)))
 #+end_src
 
 #+RESULTS:

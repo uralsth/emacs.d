@@ -1826,7 +1826,9 @@ same directory as the org-buffer and insert a link to this file."
 ;; (add-hook 'after-init-hook #'global-emojify-mode)
 (add-hook 'telega-load-hook
           (lambda ()
-            (define-key global-map (kbd "C-c t") telega-prefix-map)))
+            (define-key global-map (kbd "C-c t") telega-prefix-map)
+            (telega-mode-line-mode)
+            (telega-notifications-mode)))
 
 (use-package mu4e
     :ensure nil
