@@ -61,6 +61,7 @@
 (straight-use-package 'dap-mode)
 ;; (straight-use-package 'dap-netcore)
 (straight-use-package 'pyvenv)
+(straight-use-package 'highlight-indent-guides)
 (straight-use-package 'django-mode)
 (straight-use-package 'django-snippets)
 (straight-use-package 'lsp-pyright)
@@ -858,7 +859,7 @@ targets."
   (define-key global-map "\C-cc" 'org-capture)
   (setq org-capture-templates
         `(("t" "Tasks / Projects")
-          ("tt" "Task" entry (file+olp "~/.emacs.d/OrgFiles/Tasks.org" "Inbox")
+          ("tt" "Task" entry (file+olp "~/Dropbox/OrgFiles/Tasks.org" "Inbox")
            "* TODO %?\n  %U\n  %a\n  %i" :empty-lines 1)
 
           ("r" "Randmon")
@@ -1214,17 +1215,17 @@ same directory as the org-buffer and insert a link to this file."
     :global t
     (if keycast-mode
         (add-hook 'pre-command-hook 'keycast--update t)
-        (remove-hook 'pre-command-hook 'keycast--update)))
+      (remove-hook 'pre-command-hook 'keycast--update)))
 
   (add-to-list 'global-mode-string '("" keycast-mode-line " ")))
 
 (use-package avy
   :config
   (gunner/leader-keys
-   "j"   '(:ignore t :which-key "jump")
-   "jj"  '(avy-goto-char :which-key "jump to char")
-   "jw"  '(avy-goto-word-0 :which-key "jump to word")
-   "jl"  '(avy-goto-line :which-key "jump to line")))
+    "j"   '(:ignore t :which-key "jump")
+    "jj"  '(avy-goto-char :which-key "jump to char")
+    "jw"  '(avy-goto-word-0 :which-key "jump to word")
+    "jl"  '(avy-goto-line :which-key "jump to line")))
 
 (use-package popper
   :straight t ; or :straight t
@@ -1398,6 +1399,12 @@ same directory as the org-buffer and insert a link to this file."
   :straight t
   :defer 42)
 
+(use-package typescript-mode
+  :mode "\\.ts\\'"
+  :hook (typescript-mode . lsp-deferred)
+  :config
+  (setq typescript-indent-level 2))
+
 (use-package lsp-pyright
   :straight t
   :after python-mode
@@ -1486,8 +1493,8 @@ same directory as the org-buffer and insert a link to this file."
 (add-hook 'html-mode-hook 'skewer-html-mode)
 
 (add-hook 'sgml-mode-hook 'emmet-mode) 
- (add-hook 'html-mode-hook 'emmet-mode)
- (add-hook 'css-mode-hook  'emmet-mode) ;; enable Emmet's css abbreviation.
+(add-hook 'html-mode-hook 'emmet-mode)
+(add-hook 'css-mode-hook  'emmet-mode) ;; enable Emmet's css abbreviation.
 (add-hook 'emmet-mode-hook (lambda () (setq emmet-indentation 2))) ;; indent 2 spaces.
 (setq emmet-expand-jsx-className? t) ;; default nil
 
@@ -1508,7 +1515,7 @@ same directory as the org-buffer and insert a link to this file."
 (use-package dart-mode
   :custom
   (dart-sdk-path (concat (getenv "HOME") "/flutter/bin/cache/dark-sdk/")
-   dart-format-on-save t))
+                 dart-format-on-save t))
 
 (use-package hover
   :straight  t
@@ -1554,6 +1561,9 @@ same directory as the org-buffer and insert a link to this file."
   (save-excursion
     (end-of-line)
     (hs-toggle-hiding)))
+
+(add-hook 'lsp-mode-hook 'highlight-indent-guides-mode)
+(customize-set-variable 'highlight-indent-guides-method 'character)
 
 (use-package flyspell-correct
   :bind ("C-M-," . flyspell-correct-at-point)
@@ -1831,30 +1841,30 @@ same directory as the org-buffer and insert a link to this file."
             (telega-notifications-mode)))
 
 (use-package mu4e
-    :ensure nil
-    ;; :load-path "/usr/share/emacs/site-lisp/mu4e/"
-    ;; :defer 20 ; Wait until 20 seconds after startup
-    :config
+  :ensure nil
+  ;; :load-path "/usr/share/emacs/site-lisp/mu4e/"
+  ;; :defer 20 ; Wait until 20 seconds after startup
+  :config
 
-    ;; This is set to 't' to avoid mail syncing issues when using mbsync
-    (setq mu4e-change-filenames-when-moving t)
+  ;; This is set to 't' to avoid mail syncing issues when using mbsync
+  (setq mu4e-change-filenames-when-moving t)
 
-    ;; Refresh mail using isync every 10 minutes
-    (setq mu4e-update-interval (* 10 60))
-    (setq mu4e-get-mail-command "mbsync -a")
-    (setq mu4e-maildir "~/.mail")
+  ;; Refresh mail using isync every 10 minutes
+  (setq mu4e-update-interval (* 10 60))
+  (setq mu4e-get-mail-command "mbsync -a")
+  (setq mu4e-maildir "~/.mail")
 
-    (setq mu4e-drafts-folder "/gmail/[Gmail]/Drafts")
-    (setq mu4e-sent-folder   "/gmail/[Gmail]/Sent Mail")
-    (setq mu4e-refile-folder "/gmail/[Gmail]/All Mail")
-    (setq mu4e-trash-folder  "/gmail/[Gmail]/Trash")
+  (setq mu4e-drafts-folder "/gmail/[Gmail]/Drafts")
+  (setq mu4e-sent-folder   "/gmail/[Gmail]/Sent Mail")
+  (setq mu4e-refile-folder "/gmail/[Gmail]/All Mail")
+  (setq mu4e-trash-folder  "/gmail/[Gmail]/Trash")
 
-(setq mu4e-maildir-shortcuts
-    '((:maildir "/gmail/Inbox"    :key ?i)
-      (:maildir "/gmail/[Gmail]/Sent Mail" :key ?s)
-      (:maildir "/gmail/[Gmail]/Trash"     :key ?t)
-      (:maildir "/gmail/[Gmail]/Drafts"    :key ?d)
-      (:maildir "/gmail/[Gmail]/All Mail"  :key ?a))))
+  (setq mu4e-maildir-shortcuts
+        '((:maildir "/gmail/Inbox"    :key ?i)
+          (:maildir "/gmail/[Gmail]/Sent Mail" :key ?s)
+          (:maildir "/gmail/[Gmail]/Trash"     :key ?t)
+          (:maildir "/gmail/[Gmail]/Drafts"    :key ?d)
+          (:maildir "/gmail/[Gmail]/All Mail"  :key ?a))))
 
 (use-package tracking
   :defer t
@@ -1967,6 +1977,22 @@ same directory as the org-buffer and insert a link to this file."
   ;;                                      (:empty . :fill)
   ;;                                      (:filter) (:status) (:db-date)))
   )
+
+(use-package elfeed-tube
+  :straight (:host github :repo "karthink/elfeed-tube")
+  :after elfeed
+  :demand t
+  :config
+  ;; (setq elfeed-tube-auto-save-p nil) ;; t is auto-save (not default)
+  ;; (setq elfeed-tube-auto-fetch-p t) ;;  t is auto-fetch (default)
+  (elfeed-tube-setup)
+
+  :bind (:map elfeed-show-mode-map
+              ("F" . elfeed-tube-fetch)
+              ([remap save-buffer] . elfeed-tube-save)
+              :map elfeed-search-mode-map
+              ("F" . elfeed-tube-fetch)
+              ([remap save-buffer] . elfeed-tube-save)))
 
 (setq browse-url-generic-program (executable-find "firefox")
       browse-url-browser-function 'browse-url-generic
