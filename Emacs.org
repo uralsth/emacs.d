@@ -1857,27 +1857,22 @@ This snippet adds a hook to =org-mode= buffers so that =gunner/org-babel-tangle-
     )
 #+end_src
 
-** Html Mode
+** Html and CSS Mode
 #+begin_src emacs-lisp
   (add-hook 'html-mode-hook 'lsp)
-  (add-hook 'html-mode-hook 'skewer-html-mode)
+  (add-hook 'css-mode-hook 'lsp)
 #+end_src
 
 ** JavaScript
 #+begin_src emacs-lisp
   (use-package js2-mode
     :straight t
-    :mode ("\\.js\\'" . js2-mode)
-    :hook ((js2-imenu-extras-mode . js2-mode)
-           (js2-refactor-mode . js2-mode))
+    :mode "\\.js\\'"
+    :hook ((js2-mode . lsp)
+           (js2-mode . js2-imenu-extras-mode)
+           (js2-mode . js2-refactor-mode))
     )
   ;; (js2r-add-keybindings-with-prefix "C-c C-r")
-#+end_src
-
-** Simple-httpd
-#+begin_src emacs-lisp
-  (require 'simple-httpd)
-  (httpd-start)
 #+end_src
 
 ** Emmet for web development
@@ -1885,8 +1880,16 @@ This snippet adds a hook to =org-mode= buffers so that =gunner/org-babel-tangle-
   (add-hook 'sgml-mode-hook 'emmet-mode) 
   (add-hook 'html-mode-hook 'emmet-mode)
   (add-hook 'css-mode-hook  'emmet-mode) ;; enable Emmet's css abbreviation.
+  (add-hook 'emmet-mode-hook (lambda () (setq emmet-indent-after-insert nil)))
   (add-hook 'emmet-mode-hook (lambda () (setq emmet-indentation 2))) ;; indent 2 spaces.
-  (setq emmet-expand-jsx-className? t) ;; default nil
+  (setq emmet-move-cursor-between-quotes t) ;; default nil
+#+end_src
+
+** Skewer mode
+#+begin_src emacs-lisp
+(add-hook 'js2-mode-hook 'skewer-mode)
+(add-hook 'css-mode-hook 'skewer-css-mode)
+(add-hook 'html-mode-hook 'skewer-html-mode)
 #+end_src
 
 ** Livedown for live preview

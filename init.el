@@ -1493,24 +1493,27 @@ same directory as the org-buffer and insert a link to this file."
   )
 
 (add-hook 'html-mode-hook 'lsp)
-(add-hook 'html-mode-hook 'skewer-html-mode)
+(add-hook 'css-mode-hook 'lsp)
 
 (use-package js2-mode
   :straight t
-  :mode ("\\.js\\'" . js2-mode)
-  :hook ((js2-imenu-extras-mode . js2-mode)
-         (js2-refactor-mode . js2-mode))
+  :mode "\\.js\\'"
+  :hook ((js2-mode . lsp)
+         (js2-mode . js2-imenu-extras-mode)
+         (js2-mode . js2-refactor-mode))
   )
 ;; (js2r-add-keybindings-with-prefix "C-c C-r")
-
-(require 'simple-httpd)
-(httpd-start)
 
 (add-hook 'sgml-mode-hook 'emmet-mode) 
 (add-hook 'html-mode-hook 'emmet-mode)
 (add-hook 'css-mode-hook  'emmet-mode) ;; enable Emmet's css abbreviation.
+(add-hook 'emmet-mode-hook (lambda () (setq emmet-indent-after-insert nil)))
 (add-hook 'emmet-mode-hook (lambda () (setq emmet-indentation 2))) ;; indent 2 spaces.
-(setq emmet-expand-jsx-className? t) ;; default nil
+(setq emmet-move-cursor-between-quotes t) ;; default nil
+
+(add-hook 'js2-mode-hook 'skewer-mode)
+(add-hook 'css-mode-hook 'skewer-css-mode)
+(add-hook 'html-mode-hook 'skewer-html-mode)
 
 ;; (add-to-list 'load-path (expand-file-name "~/.emacs.d/emacs-livedown"))
 ;; (require 'livedown)
