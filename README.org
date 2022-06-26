@@ -1,7 +1,7 @@
 #+TITLE: My Emacs Configuration
 #+AUTHOR: Ural Shrestha
 #+PROPERTY: header-args:emacs-lisp :tangle ./init.el :mkdirp yes
-#+OPTIONS: toc:nil
+# #+OPTIONS: toc:nil
 #+STARTUP: overview
 
 * Welcome!
@@ -132,8 +132,6 @@
 
 * Basic UI Configuration
 
-This section configures basic UI settings that remove unneeded elements to make Emacs look a lot more minimal and modern.  If you're just getting started in Emacs, the menu bar might be helpful so you can remove the =(menu-bar-mode -1)= line if you'd like to still see that.
-
 #+begin_src emacs-lisp
 
   (setq inhibit-startup-message t)
@@ -207,9 +205,9 @@ This section configures basic UI settings that remove unneeded elements to make 
 #+end_src
 
 
-** Font Configuration
+* Font Configuration
 
-[[https://github.com/tonsky/FiraCode][Fira Code]] and [[https://fonts.google.com/specimen/Cantarell][Cantarell]] fonts needs to be installed for this configuration.
+[[https://sourcefoundry.org/hack/][Hack]] and [[https://fonts.google.com/specimen/Cantarell][Cantarell]] fonts needs to be installed for this configuration.
 
 #+begin_src emacs-lisp
 
@@ -931,8 +929,6 @@ This package emulates surround.vim by Tim Pope. The functionality is wrapped int
 
 * Org Mode
 
-[[https://orgmode.org/][Org Mode]] is one of the hallmark features of Emacs.  It is a rich document editor, project planner, task and time tracker, blogging engine, and literate coding utility all wrapped up in one package.
-
 ** Basic Config
 
 #+begin_src emacs-lisp
@@ -1086,7 +1082,7 @@ This package emulates surround.vim by Tim Pope. The functionality is wrapped int
 
 *** Nicer Heading Bullets
 
-[[https://github.com/sabof/org-bullets][org-bullets]] replaces the heading stars in =org-mode= buffers with nicer looking characters that you can control.  Another option for this is [[https://github.com/integral-dw/org-superstar-mode][org-superstar-mode]] which we may cover in a later video.
+[[https://github.com/sabof/org-bullets][org-bullets]] replaces the heading stars in =org-mode= buffers with nicer looking characters that you can control. 
 
 #+begin_src emacs-lisp
 
@@ -1099,7 +1095,7 @@ This package emulates surround.vim by Tim Pope. The functionality is wrapped int
 
 *** Center Org Buffers
 
-We use [[https://github.com/joostkremers/visual-fill-column][visual-fill-column]] to center =org-mode= buffers for a more pleasing writing experience as it centers the contents of the buffer horizontally to seem more like you are editing a document.  This is really a matter of personal preference so you can remove the block below if you don't like the behavior.
+We use [[https://github.com/joostkremers/visual-fill-column][visual-fill-column]] to center =org-mode= buffers for a more pleasing writing experience as it centers the contents of the buffer horizontally to seem more like you are editing a document.
 
 #+begin_src emacs-lisp
 
@@ -2305,13 +2301,7 @@ Emacs' built in commenting functionality =comment-dwim= (usually bound to =M-;=)
 
 ** term-mode
 
-=term-mode= is a built-in terminal emulator in Emacs.  Because it is written in Emacs Lisp, you can start using it immediately with very little configuration.  If you are on Linux or macOS, =term-mode= is a great choice to get started because it supports fairly complex terminal applications (=htop=, =vim=, etc) and works pretty reliably.  However, because it is written in Emacs Lisp, it can be slower than other options like =vterm=.  The speed will only be an issue if you regularly run console apps with a lot of output.
-
-One important thing to understand is =line-mode= versus =char-mode=.  =line-mode= enables you to use normal Emacs keybindings while moving around in the terminal buffer while =char-mode= sends most of your keypresses to the underlying terminal.  While using =term-mode=, you will want to be in =char-mode= for any terminal applications that have their own keybindings.  If you're just in your usual shell, =line-mode= is sufficient and feels more integrated with Emacs.
-
-With =evil-collection= installed, you will automatically switch to =char-mode= when you enter Evil's insert mode (press =i=).  You will automatically be switched back to =line-mode= when you enter Evil's normal mode (press =ESC=).
-
-Run a terminal with =M-x term!=
+=term-mode= is a built-in terminal emulator in Emacs.  Because it is written in Emacs Lisp, you can start using it immediately with very little configuration. With =evil-collection= installed, you will automatically switch to =char-mode= when you enter Evil's insert mode (press =i=).  You will automatically be switched back to =line-mode= when you enter Evil's normal mode (press =ESC=).
 
 *Useful key bindings:*
 
@@ -2334,8 +2324,6 @@ Run a terminal with =M-x term!=
 #+end_src
 
 *** Better term-mode colors
-
-The =eterm-256color= package enhances the output of =term-mode= to enable handling of a wider range of color codes so that many popular terminal applications look as you would expect them to.  Keep in mind that this package requires =ncurses= to be installed on your machine so that it has access to the =tic= program.  Most Linux distributions come with this program installed already so you may not have to do anything extra to use it.
 
 #+begin_src emacs-lisp
 
@@ -2390,16 +2378,12 @@ One advantage of =shell-mode= on Windows is that it's the only way to run =cmd.e
 
 [[https://www.gnu.org/software/emacs/manual/html_mono/eshell.html#Contributors-to-Eshell][Eshell]] is Emacs' own shell implementation written in Emacs Lisp.  It provides you with a cross-platform implementation (even on Windows!) of the common GNU utilities you would find on Linux and macOS (=ls=, =rm=, =mv=, =grep=, etc).  It also allows you to call Emacs Lisp functions directly from the shell and you can even set up aliases (like aliasing =vim= to =find-file=).  Eshell is also an Emacs Lisp REPL which allows you to evaluate full expressions at the shell.
 
-The downsides to Eshell are that it can be harder to configure than other packages due to the particularity of where you need to set some options for them to go into effect, the lack of shell completions (by default) for some useful things like Git commands, and that REPL programs sometimes don't work as well.  However, many of these limitations can be dealt with by good configuration and installing external packages, so don't let that discourage you from trying it!
-
 *Useful key bindings:*
 
 - =C-c C-p= / =C-c C-n= - go back and forward in the buffer's prompts (also =[[= and =]]= with evil-mode)
 - =M-p= / =M-n= - go back and forward in the input history
 - =C-c C-u= - delete the current input string backwards up to the cursor
 - =counsel-esh-history= - A searchable history of commands typed into Eshell
-
-We will be covering Eshell more in future videos highlighting other things you can do with it.
 
 For more thoughts on Eshell, check out these articles by Pierre Neidhardt:
 - https://ambrevar.xyz/emacs-eshell/index.html
@@ -2832,27 +2816,6 @@ For more thoughts on Eshell, check out these articles by Pierre Neidhardt:
 
 #+RESULTS:
 | doom-modeline-set-project-modeline | dired-hide-dotfiles-mode | dired-extra-startup | all-the-icons-dired-mode |
-
-* Applications
-
-** Some App
-
-This is an example of configuring another non-Emacs application using org-mode.  Not only do we write out the configuration at =.config/some-app/config=, we also compute the value that gets stored in this configuration from the Emacs Lisp block above it.
-
-#+NAME: the-value
-#+begin_src emacs-lisp :tangle no
-
-  (+ 55 100)
-
-#+end_src
-
-*NOTE*: Set the =:tangle= parameter below to =.config/some-app/config= for this to work!
-
-#+begin_src conf :tangle no :noweb yes
-
-  value=<<the-value()>>
-
-#+end_src
 
 * Runtime Performance
 
