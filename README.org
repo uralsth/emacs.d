@@ -332,7 +332,7 @@ This package emulates surround.vim by Tim Pope. The functionality is wrapped int
       "t"  '(:ignore t :which-key "toggles")
       "tl" '(consult-theme :which-key "choose theme")
       "td" '(disable-theme :which-key "disable existing theme")
-      "fde" '(lambda () (interactive) (find-file (expand-file-name "~/.emacs.d/Emacs.org"))))) 
+      "fde" '(lambda () (interactive) (find-file (expand-file-name "~/.emacs.d/README.org")))))
 
 #+end_src
 
@@ -1185,11 +1185,11 @@ Org Mode's [[https://orgmode.org/manual/Structure-Templates.html][structure temp
 #+end_src
 ** Auto-tangle Configuration Files
 
-This snippet adds a hook to =org-mode= buffers so that =gunner/org-babel-tangle-config= gets executed each time such a buffer gets saved.  This function checks to see if the file being saved is the Emacs.org file you're looking at right now, and if so, automatically exports the configuration here to the associated output files.
+This snippet adds a hook to =org-mode= buffers so that =gunner/org-babel-tangle-config= gets executed each time such a buffer gets saved.  This function checks to see if the file being saved is the README.org file you're looking at right now, and if so, automatically exports the configuration here to the associated output files.
 
 #+begin_src emacs-lisp
 
-  ;; Automatically tangle our Emacs.org config file when we save it
+  ;; Automatically tangle our README.org config file when we save it
   (defun gunner/org-babel-tangle-config ()
     (when (string-equal (file-name-directory (buffer-file-name))
                         (expand-file-name user-emacs-directory))
