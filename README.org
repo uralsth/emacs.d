@@ -1,7 +1,7 @@
 #+TITLE: My Emacs Configuration
 #+AUTHOR: Ural Shrestha
 #+PROPERTY: header-args:emacs-lisp :tangle ./init.el :mkdirp yes
-# #+OPTIONS: toc:nil
+#+OPTIONS: toc:5
 #+STARTUP: overview
 
 * Welcome!
