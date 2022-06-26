@@ -250,7 +250,7 @@
     "t"  '(:ignore t :which-key "toggles")
     "tl" '(consult-theme :which-key "choose theme")
     "td" '(disable-theme :which-key "disable existing theme")
-    "fde" '(lambda () (interactive) (find-file (expand-file-name "~/.emacs.d/Emacs.org")))))
+    "fde" '(lambda () (interactive) (find-file (expand-file-name "~/.emacs.d/README.org")))))
 
 (use-package doom-themes
   :straight t
@@ -965,7 +965,7 @@ targets."
   (add-to-list 'org-structure-template-alist '("cl" . "src c"))
   (add-to-list 'org-structure-template-alist '("py" . "src python")))
 
-;; Automatically tangle our Emacs.org config file when we save it
+;; Automatically tangle our README.org config file when we save it
 (defun gunner/org-babel-tangle-config ()
   (when (string-equal (file-name-directory (buffer-file-name))
                       (expand-file-name user-emacs-directory))
