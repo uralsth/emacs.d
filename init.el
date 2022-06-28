@@ -39,10 +39,10 @@
 
 (straight-use-package 'use-package)
 (straight-use-package 'vertico)
-(straight-use-package 'simple-httpd)
 (straight-use-package 'consult)
 (straight-use-package 'marginalia)
 (straight-use-package 'evil)
+(straight-use-package 'rainbow-mode)
 (straight-use-package 'openwith)
 (straight-use-package 'orderless)
 (straight-use-package 'savehist)
@@ -57,16 +57,13 @@
 (straight-use-package 'undo-tree)
 (straight-use-package 'helpful)
 (straight-use-package 'hydra)
-(straight-use-package 'js2-refactor)
-(straight-use-package 'xref-js2)
+(straight-use-package 'json-mode)
 (straight-use-package 'lsp-mode)
 (straight-use-package 'lsp-treemacs)
 (straight-use-package 'dap-mode)
 ;; (straight-use-package 'dap-netcore)
 (straight-use-package 'pyvenv)
 (straight-use-package 'highlight-indent-guides)
-(straight-use-package 'django-mode)
-(straight-use-package 'django-snippets)
 (straight-use-package 'lsp-pyright)
 (straight-use-package 'omnisharp-mode)
 (straight-use-package 'omnisharp)
@@ -475,7 +472,7 @@
 (use-package diminish)
 (use-package doom-modeline
   :init (doom-modeline-mode nil)
-  :hook (after-init . doom-modeline-init)
+  :hook (after-init . doom-modeline-mode)
   :custom-face
   (mode-line ((t (:height 0.85))))
   (mode-line-inactive ((t (:height 0.85))))
@@ -1498,10 +1495,9 @@ same directory as the org-buffer and insert a link to this file."
 (use-package js2-mode
   :straight t
   :mode "\\.js\\'"
-  :hook ((js2-mode . lsp)
-         (js2-mode . js2-imenu-extras-mode)
-         (js2-mode . js2-refactor-mode))
+  :hook (js2-mode . lsp)
   )
+
 ;; (js2r-add-keybindings-with-prefix "C-c C-r")
 
 (add-hook 'sgml-mode-hook 'emmet-mode) 
@@ -1514,9 +1510,6 @@ same directory as the org-buffer and insert a link to this file."
 (add-hook 'js2-mode-hook 'skewer-mode)
 (add-hook 'css-mode-hook 'skewer-css-mode)
 (add-hook 'html-mode-hook 'skewer-html-mode)
-
-;; (add-to-list 'load-path (expand-file-name "~/.emacs.d/emacs-livedown"))
-;; (require 'livedown)
 
 (use-package lua-mode
   :straight t
@@ -1759,12 +1752,6 @@ same directory as the org-buffer and insert a link to this file."
 (setq visual-fill-column-center-text t)
 (add-hook 'nov-mode-hook 'visual-line-mode)
 (add-hook 'nov-mode-hook 'visual-fill-column-mode)
-
-(defadvice ido-find-file (after find-file-sudo activate)
-  "Find file as root if necessary."
-  (unless (and buffer-file-name
-               (file-writable-p buffer-file-name))
-    (find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name))))
 
 (use-package evil-nerd-commenter
   :bind ("M-/" . evilnc-comment-or-uncomment-lines))

@@ -1,7 +1,6 @@
 #+TITLE: My Emacs Configuration
 #+AUTHOR: Ural Shrestha
 #+PROPERTY: header-args:emacs-lisp :tangle ./init.el :mkdirp yes
-#+OPTIONS: toc:5
 #+STARTUP: overview
 
 * Welcome!
@@ -71,10 +70,10 @@
 
   (straight-use-package 'use-package)
   (straight-use-package 'vertico)
-  (straight-use-package 'simple-httpd)
   (straight-use-package 'consult)
   (straight-use-package 'marginalia)
   (straight-use-package 'evil)
+  (straight-use-package 'rainbow-mode)
   (straight-use-package 'openwith)
   (straight-use-package 'orderless)
   (straight-use-package 'savehist)
@@ -89,16 +88,13 @@
   (straight-use-package 'undo-tree)
   (straight-use-package 'helpful)
   (straight-use-package 'hydra)
-  (straight-use-package 'js2-refactor)
-  (straight-use-package 'xref-js2)
+  (straight-use-package 'json-mode)
   (straight-use-package 'lsp-mode)
   (straight-use-package 'lsp-treemacs)
   (straight-use-package 'dap-mode)
   ;; (straight-use-package 'dap-netcore)
   (straight-use-package 'pyvenv)
   (straight-use-package 'highlight-indent-guides)
-  (straight-use-package 'django-mode)
-  (straight-use-package 'django-snippets)
   (straight-use-package 'lsp-pyright)
   (straight-use-package 'omnisharp-mode)
   (straight-use-package 'omnisharp)
@@ -203,7 +199,6 @@
         `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
 
 #+end_src
-
 
 * Font Configuration
 
@@ -567,8 +562,6 @@ This package emulates surround.vim by Tim Pope. The functionality is wrapped int
 
 #+end_src
 
-#+RESULTS:
-: pulsar-highlight-line
 
 ** Better Modeline
 
@@ -580,7 +573,7 @@ This package emulates surround.vim by Tim Pope. The functionality is wrapped int
   (use-package diminish)
   (use-package doom-modeline
     :init (doom-modeline-mode nil)
-    :hook (after-init . doom-modeline-init)
+    :hook (after-init . doom-modeline-mode)
     :custom-face
     (mode-line ((t (:height 0.85))))
     (mode-line-inactive ((t (:height 0.85))))
@@ -799,7 +792,6 @@ This package emulates surround.vim by Tim Pope. The functionality is wrapped int
     :defer t)
 #+end_src
 
-#+RESULTS:
 ** Hydra Windows Navigation
 #+begin_src emacs-lisp
   (defhydra hydra-windows-nav (:color red)
@@ -1864,11 +1856,11 @@ This snippet adds a hook to =org-mode= buffers so that =gunner/org-babel-tangle-
   (use-package js2-mode
     :straight t
     :mode "\\.js\\'"
-    :hook ((js2-mode . lsp)
-           (js2-mode . js2-imenu-extras-mode)
-           (js2-mode . js2-refactor-mode))
+    :hook (js2-mode . lsp)
     )
+
   ;; (js2r-add-keybindings-with-prefix "C-c C-r")
+
 #+end_src
 
 ** Emmet for web development
@@ -1883,15 +1875,9 @@ This snippet adds a hook to =org-mode= buffers so that =gunner/org-babel-tangle-
 
 ** Skewer mode
 #+begin_src emacs-lisp
-(add-hook 'js2-mode-hook 'skewer-mode)
-(add-hook 'css-mode-hook 'skewer-css-mode)
-(add-hook 'html-mode-hook 'skewer-html-mode)
-#+end_src
-
-** Livedown for live preview
-#+begin_src emacs-lisp
-  ;; (add-to-list 'load-path (expand-file-name "~/.emacs.d/emacs-livedown"))
-  ;; (require 'livedown)
+  (add-hook 'js2-mode-hook 'skewer-mode)
+  (add-hook 'css-mode-hook 'skewer-css-mode)
+  (add-hook 'html-mode-hook 'skewer-html-mode)
 #+end_src
 
 ** Lua Mode
@@ -2257,18 +2243,6 @@ It's also possible to set it to t to inhibit text filling, this can be used in c
 #+RESULTS:
 | visual-fill-column-mode | visual-line-mode | my-nov-font-setup | nov-imenu-setup | hack-dir-local-variables-non-file-buffer | nov-add-to-recentf |
 
-* Open as Root
-#+begin_src emacs-lisp
-  (defadvice ido-find-file (after find-file-sudo activate)
-    "Find file as root if necessary."
-    (unless (and buffer-file-name
-                 (file-writable-p buffer-file-name))
-      (find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name))))
-#+end_src
-
-#+RESULTS:
-: ido-find-file
-
 * Commenting
 
 Emacs' built in commenting functionality =comment-dwim= (usually bound to =M-;=) doesn't always comment things in the way you might expect so we use [[https://github.com/redguardtoo/evil-nerd-commenter][evil-nerd-commenter]] to provide a more familiar behavior.  I've bound it to =M-/= since other editors sometimes use this binding but you could also replace Emacs' =M-;= binding with this command.
@@ -2351,7 +2325,6 @@ Make sure that you have the [[https://github.com/akermu/emacs-libvterm/#requirem
 
 #+end_src
 
-#+RESULTS:
 
 ** shell-mode
 
