@@ -84,6 +84,7 @@
 (straight-use-package 'ripgrep)
 (straight-use-package 'rg)
 (straight-use-package 'dart-mode)
+(straight-use-package 'php-mode)
 (straight-use-package 'lsp-dart)
 (straight-use-package 'projectile-ripgrep)
 (straight-use-package 'htmlize)
@@ -1391,14 +1392,6 @@ same directory as the org-buffer and insert a link to this file."
 ;;     (add-to-list 'lsp-disabled-clients 'pyls)
 ;;     (add-to-list 'lsp-enabled-clients 'jedi)))
 
-(use-package django-mode
-  :straight t
-  :defer 40)
-
-(use-package djangonaut
-  :straight t
-  :defer 42)
-
 (use-package typescript-mode
   :mode "\\.ts\\'"
   :hook (typescript-mode . lsp-deferred)
@@ -1517,6 +1510,17 @@ same directory as the org-buffer and insert a link to this file."
   :mode ("\\.lua\\'" . lua-mode)
   :interpreter ("lua" . lua-mode)
   )
+
+(use-package php-mode
+  :straight t
+  :after lsp
+  :mode "\\.php\\'"
+  :hook (php-mode . lsp)
+  )
+(with-eval-after-load 'lsp-mode
+  (add-hook 'lsp-mode-hook #'lsp-enable-which-key-integration)
+  (require 'dap-php)
+  (yas-global-mode))
 
 (add-hook 'c-mode-hook 'lsp)
 (add-hook 'c++-mode-hook 'lsp)
