@@ -83,7 +83,6 @@
 (straight-use-package 'dabbrev)
 (straight-use-package 'ripgrep)
 (straight-use-package 'rg)
-(straight-use-package 'dart-mode)
 (straight-use-package 'php-mode)
 (straight-use-package 'lsp-dart)
 (straight-use-package 'projectile-ripgrep)
@@ -1525,29 +1524,6 @@ same directory as the org-buffer and insert a link to this file."
 (add-hook 'c-mode-hook 'lsp)
 (add-hook 'c++-mode-hook 'lsp)
 
-;; Assuming usage with dart-mode
-(use-package dart-mode
-  :custom
-  (dart-sdk-path (concat (getenv "HOME") "/flutter/bin/cache/dark-sdk/")
-                 dart-format-on-save t))
-
-(use-package hover
-  :straight  t
-  :after dart-mode
-  :bind (:map hover-minor-mode-map
-              ("C-M-z" . #'hover-run-or-hot-reload)
-              ("C-M-x" . #'hover-run-or-hot-restart)
-              ("C-M-p" . #'hover-take-screenshot))
-  :init
-  (setq hover-flutter-sdk-path (concat (getenv "HOME") "/flutter") ; remove if `flutter` is already in $PATH
-        hover-command-path (concat (getenv "GOPATH") "/bin/hover") ; remove if `hover` is already in $PATH
-        hover-hot-reload-on-save t
-        hover-screenshot-path (concat (getenv "HOME") "/Pictures")
-        hover-screenshot-prefix "my-prefix-"
-        hover-observatory-uri "http://my-custom-host:50300"
-        hover-clear-buffer-on-hot-restart t)
-  (hover-minor-mode 1))
-
 (use-package dumb-jump
   :straight t)
 
@@ -1742,20 +1718,6 @@ same directory as the org-buffer and insert a link to this file."
 
 
   )
-
-(add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
-
-(defun my-nov-font-setup ()
-  (face-remap-add-relative 'variable-pitch :family "Liberation Serif"
-                           :height 1.0))
-(add-hook 'nov-mode-hook 'my-nov-font-setup)
-
-(setq nov-text-width 80)
-
-(setq nov-text-width t)
-(setq visual-fill-column-center-text t)
-(add-hook 'nov-mode-hook 'visual-line-mode)
-(add-hook 'nov-mode-hook 'visual-fill-column-mode)
 
 (use-package evil-nerd-commenter
   :bind ("M-/" . evilnc-comment-or-uncomment-lines))
@@ -1985,22 +1947,6 @@ same directory as the org-buffer and insert a link to this file."
   ;;                                      (:empty . :fill)
   ;;                                      (:filter) (:status) (:db-date)))
   )
-
-(use-package elfeed-tube
-  :straight (:host github :repo "karthink/elfeed-tube")
-  :after elfeed
-  :demand t
-  :config
-  ;; (setq elfeed-tube-auto-save-p nil) ;; t is auto-save (not default)
-  ;; (setq elfeed-tube-auto-fetch-p t) ;;  t is auto-fetch (default)
-  (elfeed-tube-setup)
-
-  :bind (:map elfeed-show-mode-map
-              ("F" . elfeed-tube-fetch)
-              ([remap save-buffer] . elfeed-tube-save)
-              :map elfeed-search-mode-map
-              ("F" . elfeed-tube-fetch)
-              ([remap save-buffer] . elfeed-tube-save)))
 
 (setq browse-url-generic-program (executable-find "firefox")
       browse-url-browser-function 'browse-url-generic
