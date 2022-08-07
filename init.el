@@ -3,7 +3,7 @@
 (defvar gunner/default-variable-font-size 120)
 
 ;; Make frame transparency overridable
-(defvar gunner/frame-transparency '(100 . 100))
+(defvar gunner/frame-transparency '(83 . 83))
 
 ;; The default is 800 kilobytes.  Measured in bytes.
 (setq gc-cons-threshold (* 50 1000 1000))
@@ -65,6 +65,7 @@
 (straight-use-package 'pyvenv)
 (straight-use-package 'highlight-indent-guides)
 (straight-use-package 'lsp-pyright)
+(straight-use-package 'dotnet)
 (straight-use-package 'omnisharp-mode)
 (straight-use-package 'omnisharp)
 (straight-use-package 'company)
@@ -1429,6 +1430,7 @@ same directory as the org-buffer and insert a link to this file."
     (setq projectile-project-search-path '("~/Projects/Code")))
   (setq projectile-switch-project-action #'projectile-dired)
   :config (projectile-mode)
+  (add-to-list 'projectile-project-root-files-bottom-up "College.System.sln")
   (gunner/leader-keys
     "pf" 'consult-projectile-find-file
     "ps" 'consult-projectile-switch-project

@@ -12,7 +12,7 @@
   (defvar gunner/default-variable-font-size 120)
 
   ;; Make frame transparency overridable
-  (defvar gunner/frame-transparency '(100 . 100))
+  (defvar gunner/frame-transparency '(83 . 83))
 
 #+end_src
 
@@ -96,6 +96,7 @@
   (straight-use-package 'pyvenv)
   (straight-use-package 'highlight-indent-guides)
   (straight-use-package 'lsp-pyright)
+  (straight-use-package 'dotnet)
   (straight-use-package 'omnisharp-mode)
   (straight-use-package 'omnisharp)
   (straight-use-package 'company)
@@ -1759,32 +1760,33 @@ This snippet adds a hook to =org-mode= buffers so that =gunner/org-babel-tangle-
 
 ** Projectile
 #+begin_src emacs-lisp
-  (use-package projectile
-    :diminish projectile-mode
-    ;; :custom ((projectile-completion-system 'default))
-    :bind-keymap
-    ("C-c p" . projectile-command-map)
-    :init
-    ;; NOTE: Set this to the folder where you keep your Git repos!
-    (when (file-directory-p "~/Projects/Code")
-      (setq projectile-project-search-path '("~/Projects/Code")))
-    (setq projectile-switch-project-action #'projectile-dired)
-    :config (projectile-mode)
-    (gunner/leader-keys
-      "pf" 'consult-projectile-find-file
-      "ps" 'consult-projectile-switch-project
-      "pF" 'consult-ripgrep 
-      "pl" 'consult-lsp-symbols 
-      "pb" 'consult-projectile-switch-to-buffer
-      "pc" 'projectile-compile-project
-      "pd" 'projectile-dired
-      "pd" 'consult-projectile-find-dir
-      "pr" 'projectile-run-project
-      "pv" 'projectile-run-vterm))
+    (use-package projectile
+      :diminish projectile-mode
+      ;; :custom ((projectile-completion-system 'default))
+      :bind-keymap
+      ("C-c p" . projectile-command-map)
+      :init
+      ;; NOTE: Set this to the folder where you keep your Git repos!
+      (when (file-directory-p "~/Projects/Code")
+        (setq projectile-project-search-path '("~/Projects/Code")))
+      (setq projectile-switch-project-action #'projectile-dired)
+      :config (projectile-mode)
+      (add-to-list 'projectile-project-root-files-bottom-up "College.System.sln")
+      (gunner/leader-keys
+        "pf" 'consult-projectile-find-file
+        "ps" 'consult-projectile-switch-project
+        "pF" 'consult-ripgrep 
+        "pl" 'consult-lsp-symbols 
+        "pb" 'consult-projectile-switch-to-buffer
+        "pc" 'projectile-compile-project
+        "pd" 'projectile-dired
+        "pd" 'consult-projectile-find-dir
+        "pr" 'projectile-run-project
+        "pv" 'projectile-run-vterm))
 
-  (use-package consult-projectile
-    :hook
-    (marginalia-mode . consult-projectile))
+    (use-package consult-projectile
+      :hook
+      (marginalia-mode . consult-projectile))
 #+end_src
 
 #+RESULTS:
