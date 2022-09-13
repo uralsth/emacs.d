@@ -776,9 +776,9 @@ targets."
   (setq org-log-into-drawer t)
 
   (setq org-agenda-files
-        '("~/Dropbox/OrgFiles/Tasks.org"
-          "~/Dropbox/OrgFiles/Habits.org"
-          "~/Dropbox/OrgFiles/Birthdays.org"))
+        '("~/.dropboxfolder/Dropbox/OrgFiles/Tasks.org"
+          "~/.dropboxfolder/Dropbox/OrgFiles/Habits.org"
+          "~/.dropboxfolder/Dropbox/OrgFiles/Birthdays.org"))
 
   (require 'org-habit)
   (add-to-list 'org-modules 'org-habit)
@@ -860,42 +860,42 @@ targets."
   (define-key global-map "\C-cc" 'org-capture)
   (setq org-capture-templates
         `(("t" "Tasks / Projects")
-          ("tt" "Task" entry (file+olp "~/Dropbox/OrgFiles/Tasks.org" "Inbox")
+          ("tt" "Task" entry (file+olp "~/.dropboxfolder/Dropbox/OrgFiles/Tasks.org" "Inbox")
            "* TODO %?\n  %U\n  %a\n  %i" :empty-lines 1)
 
           ("r" "Randmon")
           ("rn" "Notes" entry
-           (file+olp+datetree "~/Dropbox/OrgFiles/Notes.org")
+           (file+olp+datetree "~/.dropboxfolder/Dropbox/OrgFiles/Notes.org")
            "\n* %<%I:%M %p> - Notes :notes:\n\n%?\n\n"
            :clock-in :clock-resume
            :empty-lines 1)
           ("rq" "Questions" entry
-           (file+olp+datetree "~/Dropbox/OrgFiles/Questions.org")
+           (file+olp+datetree "~/.dropboxfolder/Dropbox/OrgFiles/Questions.org")
            "\n* %<%I:%M %p> - Questions:questions:\n\n%?\n\n"
            :clock-in :clock-resume
            :empty-lines 1)
-          ("rw" "Words" entry (file+olp "~/Dropbox/OrgFiles/Words.org")
+          ("rw" "Words" entry (file+olp "~/.dropboxfolder/Dropbox/OrgFiles/Words.org")
            "* %?\n  %U\n  %a\n  %i" :empty-lines 1)
 
           ("j" "Journal Entries")
           ("jj" "Journal" entry
-           (file+olp+datetree "~/Dropbox/OrgFiles/Journal.org")
+           (file+olp+datetree "~/.dropboxfolder/Dropbox/OrgFiles/Journal.org")
            "\n* %<%I:%M %p> - Journal :journal:\n\n%?\n\n"
            ;; ,(dw/read-file-as-string "~/Notes/Templates/Daily.org")
            :clock-in :clock-resume
            :empty-lines 1)
           ("jm" "Meeting" entry
-           (file+olp+datetree "~/Dropbox/OrgFiles/Journal.org")
+           (file+olp+datetree "~/.dropboxfolder/Dropbox/OrgFiles/Journal.org")
            "* %<%I:%M %p> - %a :meetings:\n\n%?\n\n"
            :clock-in :clock-resume
            :empty-lines 1)
 
           ("w" "Workflows")
-          ("we" "Checking Email" entry (file+olp+datetree "~/Dropbox/OrgFiles/Journal.org")
+          ("we" "Checking Email" entry (file+olp+datetree "~/.dropboxfolder/Dropbox/OrgFiles/Journal.org")
            "* Checking Email :email:\n\n%?" :clock-in :clock-resume :empty-lines 1)
 
           ("m" "Metrics Capture")
-          ("mw" "Weight" table-line (file+headline "~/Dropbox/OrgFiles/Metrics.org" "Weight")
+          ("mw" "Weight" table-line (file+headline "~/.dropboxfolder/Dropbox/OrgFiles/Metrics.org" "Weight")
            "| %U | %^{Weight} | %^{Notes} |" :kill-buffer t)))
 
   (define-key global-map (kbd "C-c j")
@@ -989,6 +989,26 @@ same directory as the org-buffer and insert a link to this file."
 
 (use-package org-download
   :hook (dired-mode-hook . org-download-enable))
+
+(defun org-habit-streak-count ()
+  (goto-char (point-min))
+  (while (not (eobp))
+    ;;on habit line?
+    (when (get-text-property (point) 'org-habit-p)
+      (let ((streak 0)
+            (counter (+ org-habit-graph-column (- org-habit-preceding-days org-habit-following-days)))
+            )
+        (move-to-column counter)
+        ;;until end of line
+        (while (= (char-after (point)) org-habit-completed-glyph)
+                (setq streak (+ streak 1))
+                (setq counter (- counter 1))
+                (backward-char 1))
+        (end-of-line)
+        (insert (number-to-string streak))))
+    (forward-line 1)))
+  
+  (add-hook 'org-agenda-finalize-hook 'org-habit-streak-count)
 
 (use-package org-pomodoro
   :straight t
@@ -1634,12 +1654,12 @@ same directory as the org-buffer and insert a link to this file."
 
 (setq emms-source-file-default-directory (expand-file-name "~/Music/"))
 
-(setq emms-player-mpd-server-name "localhost")
-(setq emms-player-mpd-server-port "6600")
-(setq emms-player-mpd-music-directory "~/Music")
-(add-to-list 'emms-info-functions 'emms-info-mpd)
-(add-to-list 'emms-player-list 'emms-player-mpd)
-(emms-player-mpd-connect)
+;; (setq emms-player-mpd-server-name "localhost")
+;; (setq emms-player-mpd-server-port "6600")
+ ;; (setq emms-player-mpd-music-directory "~/Music")
+  ;;(add-to-list 'emms-info-functions 'emms-info-mpd)
+ ;; (;;add-to-list 'emms-player-list 'emms-player-mpd)
+ ;; (emms-player-mpd-connect)
 
 (setq emms-info-asynchronously nil)
 (setq emms-playlist-buffer-name "*Music*")
@@ -1812,32 +1832,6 @@ same directory as the org-buffer and insert a link to this file."
             (telega-mode-line-mode)
             (telega-notifications-mode)))
 
-(use-package mu4e
-  :ensure nil
-  ;; :load-path "/usr/share/emacs/site-lisp/mu4e/"
-  ;; :defer 20 ; Wait until 20 seconds after startup
-  :config
-
-  ;; This is set to 't' to avoid mail syncing issues when using mbsync
-  (setq mu4e-change-filenames-when-moving t)
-
-  ;; Refresh mail using isync every 10 minutes
-  (setq mu4e-update-interval (* 10 60))
-  (setq mu4e-get-mail-command "mbsync -a")
-  (setq mu4e-maildir "~/.mail")
-
-  (setq mu4e-drafts-folder "/gmail/[Gmail]/Drafts")
-  (setq mu4e-sent-folder   "/gmail/[Gmail]/Sent Mail")
-  (setq mu4e-refile-folder "/gmail/[Gmail]/All Mail")
-  (setq mu4e-trash-folder  "/gmail/[Gmail]/Trash")
-
-  (setq mu4e-maildir-shortcuts
-        '((:maildir "/gmail/Inbox"    :key ?i)
-          (:maildir "/gmail/[Gmail]/Sent Mail" :key ?s)
-          (:maildir "/gmail/[Gmail]/Trash"     :key ?t)
-          (:maildir "/gmail/[Gmail]/Drafts"    :key ?d)
-          (:maildir "/gmail/[Gmail]/All Mail"  :key ?a))))
-
 (use-package tracking
   :defer t
   :config
@@ -1907,7 +1901,7 @@ same directory as the org-buffer and insert a link to this file."
 ;; (define-key elfeed-search-mode-map (kbd "d") 'elfeed-youtube-dl)
 ;; (define-key elfeed-search-mode-map (kbd "D") 'elfeed-mpv)
 
-(setq elfeed-db-directory "~/Dropbox/elfeeddb")
+(setq elfeed-db-directory "~/.dropboxfolder/Dropbox/elfeeddb")
 (use-package elfeed
   :straight t
   :commands (elfeed)
@@ -1923,7 +1917,7 @@ same directory as the org-buffer and insert a link to this file."
   :straight t
   :config
   (elfeed-org)
-  (setq rmh-elfeed-org-files (list "~/Dropbox/elfeed.org")))
+  (setq rmh-elfeed-org-files (list "~/.dropboxfolder/Dropbox/elfeed.org")))
 
 (use-package elfeed-goodies
   :straight t
