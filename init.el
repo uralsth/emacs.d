@@ -3,7 +3,7 @@
 (defvar gunner/default-variable-font-size 120)
 
 ;; Make frame transparency overridable
-(defvar gunner/frame-transparency '(83 . 83))
+(defvar gunner/frame-transparency '(85 . 85))
 
 ;; The default is 800 kilobytes.  Measured in bytes.
 (setq gc-cons-threshold (* 50 1000 1000))
@@ -89,7 +89,7 @@
 (straight-use-package 'projectile-ripgrep)
 (straight-use-package 'htmlize)
 
-;; (server-start)
+(server-start)
 
 (setq inhibit-startup-message t)
 
@@ -250,23 +250,23 @@
     "td" '(disable-theme :which-key "disable existing theme")
     "fde" '(lambda () (interactive) (find-file (expand-file-name "~/.emacs.d/README.org")))))
 
-(use-package doom-themes
-  :straight t
-  :config
-  ;; Global settings (defaults)
-  (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
-        doom-themes-enable-italic t) ; if nil, italics is universally disabled
-  (load-theme 'doom-zenburn t)
+;; (use-package doom-themes
+;;     :straight t
+;;     :config
+;;     ;; Global settings (defaults)
+;;     (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
+;;           doom-themes-enable-italic t) ; if nil, italics is universally disabled
+;;     (load-theme 'doom-zenburn t)
 
-  ;; Enable flashing mode-line on errors
-  (doom-themes-visual-bell-config)
-  ;; Enable custom neotree theme (all-the-icons must be installed!)
-  (doom-themes-neotree-config)
-  ;; or for treemacs users
-  (setq doom-themes-treemacs-theme "doom-atom") ; use "doom-colors" for less minimal icon theme
-  (doom-themes-treemacs-config)
-  ;; Corrects (and improves) org-mode's native fontification.
-  (doom-themes-org-config))
+;;     ;; Enable flashing mode-line on errors
+;;     (doom-themes-visual-bell-config)
+;;     ;; Enable custom neotree theme (all-the-icons must be installed!)
+;;     (doom-themes-neotree-config)
+;;     ;; or for treemacs users
+;;     (setq doom-themes-treemacs-theme "doom-atom") ; use "doom-colors" for less minimal icon theme
+;;     (doom-themes-treemacs-config)
+;;     ;; Corrects (and improves) org-mode's native fontification.
+;;     (doom-themes-org-config))
 
 ;; (use-package modus-themes
 ;;   :ensure
@@ -297,7 +297,8 @@
 ;;         ;; of padding and NATNUM), and a floating point for the height of
 ;;         ;; the text relative to the base font size (or a cons cell of
 ;;         ;; height and FLOAT)
-;;         modus-themes-mode-line nil
+;;         ;; modus-themes-mode-line nil
+;;         modus-themes-mode-line '(accented borderless)
 
 ;;         ;; Options for `modus-themes-markup' are either nil, or a list
 ;;         ;; that can combine any of `bold', `italic', `background',
@@ -366,7 +367,8 @@
 ;;         ;; Options for `modus-themes-diffs': nil, 'desaturated, 'bg-only
 ;;         modus-themes-diffs nil
 
-;;         modus-themes-org-blocks 'grayscale ; {nil,'gray-background,'tinted-background}
+;;         ;; modus-themes-org-blocks 'grayscale ; {nil,'gray-background,'tinted-background}
+;;         modus-themes-org-blocks 'gray-background ; {nil,'gray-background,'tinted-background}
 
 ;;         modus-themes-org-agenda ; this is an alist: read the manual or its doc string
 ;;         '((header-block . (variable-pitch regular 1.4))
@@ -376,9 +378,12 @@
 ;;           (habit . nil))
 
 ;;         modus-themes-headings ; this is an alist: read the manual or its doc string
-;;         '((1. (background overline))
-;;           (t . (variable-pitch bold)))
-
+;;         ;; '((1. (background overline))
+;;         ;;   (t . (variable-pitch bold)))
+;;         '((1 . (rainbow overline background 1))
+;;           (2 . (rainbow background 0.9))
+;;           (3 . (rainbow bold 0.8))
+;;           (t . (semilight 0.7)))
 ;;         ;; Sample for headings:
 
 ;;         ;;       modus-themes-headings
@@ -386,14 +391,14 @@
 ;;         ;;         (2 . (overline rainbow 0.6))
 ;;         ;;         (3 . (overline 0.5))
 ;;         ;;         (t . (monochrome)))
+;;         modus-themes-scale-headings t
 ;;         )
 
 ;;   ;; ;; Load the theme files before enabling a theme
 ;;   (modus-themes-load-themes)
-;;   :bind ("<f5>" . modus-themes-toggle)
+;;   :bind ("<f6>" . modus-themes-toggle)
 ;;   :config
 ;;   ;; Load the theme of your choice:
-
 ;;   (defun load-material-theme (frame)
 ;;     (select-frame frame)
 ;;     (modus-themes-load-vivendi))
@@ -401,6 +406,40 @@
 ;;   (if (daemonp)
 ;;       (add-hook 'after-make-frame-functions #'load-material-theme)
 ;;     (modus-themes-load-vivendi)))
+
+(use-package modus-themes
+  :ensure
+  :defer 0
+  :init
+  ;; Configure the Modus Themes' appearance
+  (setq modus-themes-bold-constructs t
+        ;; modus-themes-mode-line '(borderless)
+        modus-themes-italic-constructs t
+        modus-themes-fringes 'subtle
+        modus-themes-tabs-accented t
+        modus-themes-paren-match '(bold intense)
+        modus-themes-prompts '(bold intense)
+        ;; modus-themes-completions 'opinionated
+        modus-themes-completions
+        ( quote ((matches . (extrabold background))
+          (selection . (semibold intense text-also))
+          (popup . (intense))))
+        modus-themes-org-blocks 'tinted-background
+        ;; modus-themes-scale-headings t
+        modus-themes-region '(bg-only)
+
+        modus-themes-headings
+        '((1 . (rainbow overline background 1.1))
+          (2 . (rainbow background 1.0))
+          (3 . (rainbow bold 0.9))
+          (t . (semilight 0.8))))
+
+   :bind (
+         "<f6>" . modus-themes-toggle)
+  :config
+  ;; Load the dark theme by default
+  (load-theme 'modus-vivendi t)
+  )
 
 (add-hook 'after-make-frame-functions
           (lambda (frame)
@@ -771,13 +810,33 @@ targets."
   :config
   (setq org-ellipsis " ▾")
 
+  (define-key global-map "\C-ca" 'org-agenda)
   (setq org-agenda-start-with-log-mode t)
   (setq org-log-done 'time)
   (setq org-log-into-drawer t)
-
+  (setq org-src-block-faces
+        '(("emacs-lisp" modus-themes-nuanced-magenta)
+          ("elisp" modus-themes-nuanced-magenta)
+          ("clojure" modus-themes-nuanced-magenta)
+          ("clojurescript" modus-themes-nuanced-magenta)
+          ("c" modus-themes-nuanced-blue)
+          ("c++" modus-themes-nuanced-blue)
+          ("sh" modus-themes-nuanced-green)
+          ("shell" modus-themes-nuanced-green)
+          ("html" modus-themes-nuanced-yellow)
+          ("xml" modus-themes-nuanced-yellow)
+          ("css" modus-themes-nuanced-red)
+          ("scss" modus-themes-nuanced-red)
+          ("python" modus-themes-nuanced-green)
+          ("ipython" modus-themes-nuanced-magenta)
+          ("r" modus-themes-nuanced-cyan)
+          ("yaml" modus-themes-nuanced-cyan)
+          ("conf" modus-themes-nuanced-cyan)
+          ("docker" modus-themes-nuanced-cyan)))
   (setq org-agenda-files
         '("~/.dropboxfolder/Dropbox/OrgFiles/Tasks.org"
           "~/.dropboxfolder/Dropbox/OrgFiles/Habits.org"
+          "~/.dropboxfolder/Dropbox/OrgFiles/Series.org"
           "~/.dropboxfolder/Dropbox/OrgFiles/Birthdays.org"))
 
   (require 'org-habit)
@@ -786,10 +845,12 @@ targets."
 
   (setq org-todo-keywords
         '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!)")
-          (sequence "BACKLOG(b)" "PLAN(p)" "READY(r)" "ACTIVE(a)" "REVIEW(v)" "WAIT(w@/!)" "HOLD(h)" "|" "COMPLETED(c)" "CANC(k@)")))
+          (sequence "BACKLOG(b)" "PLAN(p)" "READY(r)" "ACTIVE(a)" "REVIEW(v)" "WAIT(w@/!)" "HOLD(h)" "|" "COMPLETED(c)" "CANC(k@)" "SKIP(s@)")))
 
   (setq org-refile-targets
         '(("Archive.org" :maxlevel . 1)
+          ("Series.org" :maxlevel . 1)
+          ("Habits.org" :maxlevel . 1)
           ("Tasks.org" :maxlevel . 1)))
 
   ;; Save Org buffers after refiling!
@@ -803,6 +864,10 @@ targets."
           ("@home" . ?H)
           ("@work" . ?W)
           ("agenda" . ?a)
+          ("emacs" . ?e)
+          ("django" . ?d)
+          ("dotnet" . ?c)
+          ("linux" . ?l)
           ("planning" . ?p)
           ("publish" . ?P)
           ("batch" . ?b)
@@ -950,6 +1015,7 @@ targets."
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((emacs-lisp . t)
+     (shell . t)
      (python . t)))
 
   (push '("conf-unix" . conf-unix) org-src-lang-modes))
@@ -959,6 +1025,7 @@ targets."
   (require 'org-tempo)
 
   (add-to-list 'org-structure-template-alist '("sh" . "src shell"))
+  (add-to-list 'org-structure-template-alist '("nsh" . "src sh :results output :session shared "))
   (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
   (add-to-list 'org-structure-template-alist '("cl" . "src c"))
   (add-to-list 'org-structure-template-alist '("py" . "src python")))
@@ -990,25 +1057,31 @@ same directory as the org-buffer and insert a link to this file."
 (use-package org-download
   :hook (dired-mode-hook . org-download-enable))
 
-(defun org-habit-streak-count ()
-  (goto-char (point-min))
-  (while (not (eobp))
-    ;;on habit line?
-    (when (get-text-property (point) 'org-habit-p)
-      (let ((streak 0)
-            (counter (+ org-habit-graph-column (- org-habit-preceding-days org-habit-following-days)))
-            )
-        (move-to-column counter)
-        ;;until end of line
-        (while (= (char-after (point)) org-habit-completed-glyph)
-                (setq streak (+ streak 1))
-                (setq counter (- counter 1))
-                (backward-char 1))
-        (end-of-line)
-        (insert (number-to-string streak))))
-    (forward-line 1)))
-  
-  (add-hook 'org-agenda-finalize-hook 'org-habit-streak-count)
+(defun my/org-checkbox-todo ()
+   "Switch header TODO state to DONE when all checkboxes are ticked, to TODO otherwise"
+   (let ((todo-state (org-get-todo-state)) beg end)
+     (unless (not todo-state)
+       (save-excursion
+     (org-back-to-heading t)
+     (setq beg (point))
+     (end-of-line)
+     (setq end (point))
+     (goto-char beg)
+     (if (re-search-forward "\\[\\([0-9]*%\\)\\]\\|\\[\\([0-9]*\\)/\\([0-9]*\\)\\]"
+                    end t)
+         (if (match-end 1)
+         (if (equal (match-string 1) "100%")
+             (unless (string-equal todo-state "DONE")
+               (org-todo 'done))
+           (unless (string-equal todo-state "TODO")
+             (org-todo 'todo)))
+           (if (and (> (match-end 2) (match-beginning 2))
+                (equal (match-string 2) (match-string 3)))
+           (unless (string-equal todo-state "DONE")
+             (org-todo 'done))
+         (unless (string-equal todo-state "TODO")
+           (org-todo 'todo)))))))))
+(add-hook 'org-checkbox-statistics-hook 'my/org-checkbox-todo)
 
 (use-package org-pomodoro
   :straight t
@@ -1035,7 +1108,7 @@ same directory as the org-buffer and insert a link to this file."
   :init
   (setq org-roam-v2-ack t)
   :custom
-  (org-roam-directory "~/Documents/RoamNotes")
+  (org-roam-directory "~/.dropboxfolder/Dropbox/RoamNotes/")
   (org-roam-completion-everywhere t)
   (org-roam-capture-templates
    '(("d" "default" plain
@@ -1205,8 +1278,7 @@ same directory as the org-buffer and insert a link to this file."
   :after corfu
   :hook (corfu-mode . corfu-doc-mode)
   :general (:keymaps 'corfu-map
-                     ;; This is a manual toggle for the documentation popup.
-                     [remap corfu-show-documentation] #'corfu-doc-toggle ; Remap the default doc command
+                     [remap corfu-show-documentation] #'corfu-doc-toggle
                      ;; Scroll in the documentation window
                      "M-n" #'corfu-doc-scroll-up
                      "M-p" #'corfu-doc-scroll-down)
@@ -1700,7 +1772,7 @@ same directory as the org-buffer and insert a link to this file."
   (setq dashboard-items '((recents  . 5)
                           ;; (bookmarks . 5)
                           (projects . 5)
-                          ;; (agenda . 5)
+                          (agenda . 5)
                           ;; (registers . 5)
                           ))
   (setq dashboard-set-heading-icons t)
