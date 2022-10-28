@@ -676,6 +676,13 @@ targets."
 (use-package transpose-frame
   :defer t)
 
+(use-package expand-region
+  :straight t
+  :bind
+  ("C-=". er/expand-region)
+  ("C--". er/contract-region)
+  )
+
 (use-package emojify
   :hook (erc-mode . emojify-mode)
   :commands emojify-mode
