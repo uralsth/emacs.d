@@ -815,6 +815,16 @@ This package emulates surround.vim by Tim Pope. The functionality is wrapped int
     :defer t)
 #+end_src
 
+** Expand region
+#+begin_src emacs-lisp
+  (use-package expand-region
+    :straight t
+    :bind
+    ("C-=". er/expand-region)
+    ("C--". er/contract-region)
+    )
+#+end_src
+
 * Emojis in bufffers 
 #+begin_src emacs-lisp
   (use-package emojify
