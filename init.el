@@ -178,7 +178,6 @@
   (setq evil-want-C-i-jump nil)
   (setq evil-respect-visual-line-mode t)
   (setq forge-add-default-bindings nil)
-  ;;(evil-set-undo-system 'undo-tree)
   :config
   (evil-mode 1)
   (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
@@ -413,6 +412,7 @@
   :ensure
   :defer 0
   :init
+  (modus-themes-load-themes)
   ;; Configure the Modus Themes' appearance
   (setq modus-themes-bold-constructs t
         ;; modus-themes-mode-line '(borderless)
@@ -424,8 +424,8 @@
         ;; modus-themes-completions 'opinionated
         modus-themes-completions
         ( quote ((matches . (extrabold background))
-          (selection . (semibold intense text-also))
-          (popup . (intense))))
+                 (selection . (semibold intense text-also))
+                 (popup . (intense))))
         modus-themes-org-blocks 'tinted-background
         ;; modus-themes-scale-headings t
         modus-themes-region '(bg-only)
@@ -436,11 +436,11 @@
           (3 . (rainbow bold 0.9))
           (t . (semilight 0.8))))
 
-   :bind (
-         "<f6>" . modus-themes-toggle)
+  :bind ("<f6>" . modus-themes-toggle)
   :config
   ;; Load the dark theme by default
-  (load-theme 'modus-vivendi t)
+  (modus-themes-load-operandi) 
+  ;; (load-theme 'modus-operandi t)
   )
 
 (add-hook 'after-make-frame-functions
@@ -1151,7 +1151,7 @@ same directory as the org-buffer and insert a link to this file."
 ;; This option is more advanced, allows you to scale other faces too
 ;; (setq-local face-remapping-alist '((default (:height 2.0) variable-pitch)
 ;;                                    (org-verbatim (:height 1.75) org-verbatim)
-;;                                    (org-block (:height 1.25) org-block))))
+;;                                    (org-block (:height 1.25) org-block)))
 
 (defun gunner/presentation-end ()
   ;; Show the mode line again
