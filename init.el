@@ -1208,7 +1208,7 @@ same directory as the org-buffer and insert a link to this file."
   :custom
   (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
   (corfu-auto t)                 ;; Enable auto completion
-  (corfu-quit-at-boundary t)   ;; Never quit at completion boundary
+  (corfu-quit-at-boundary 'separator)   ;; Never quit at completion boundary
   ;; (corfu-quit-no-match nil)      ;; Never quit, even if there is no match
   (corfu-preview-current nil)    ;; Disable current candidate preview
   (corfu-preselect-first t)    ;; Disable candidate preselection
@@ -1228,7 +1228,7 @@ same directory as the org-buffer and insert a link to this file."
 
   :bind
   (:map corfu-map
-        ("S-SPC" . corfu-insert-separator)
+        ("M-SPC" . corfu-insert-separator)
         ("C-j" . corfu-next)
         ("C-k" . corfu-previous)
         ([backtab]. corfu-previous)
