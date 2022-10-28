@@ -166,6 +166,8 @@
 ;; Make ESC quit prompts
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 (global-set-key (kbd "C-e") 'move-end-of-line)
+(global-set-key (kbd "C-M-o") 'evil-jump-backward)
+(global-set-key (kbd "C-o") 'evil-jump-forward)
 
 
 (use-package evil
