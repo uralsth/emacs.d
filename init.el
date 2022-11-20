@@ -1025,6 +1025,7 @@ targets."
    'org-babel-load-languages
    '((emacs-lisp . t)
      (shell . t)
+     (sqlite .t)
      (python . t)))
 
   (push '("conf-unix" . conf-unix) org-src-lang-modes))
@@ -1037,6 +1038,7 @@ targets."
   (add-to-list 'org-structure-template-alist '("nsh" . "src sh :results output :session shared "))
   (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
   (add-to-list 'org-structure-template-alist '("cl" . "src c"))
+  (add-to-list 'org-structure-template-alist '("sq" . "src sqlite :results output :sessions shared :db /tmp/rip.db"))
   (add-to-list 'org-structure-template-alist '("py" . "src python")))
 
 ;; Automatically tangle our README.org config file when we save it
@@ -1751,6 +1753,9 @@ same directory as the org-buffer and insert a link to this file."
   :config
   (setq lyrics-fetcher-genius-access-token "23O2v8mDgs8O7bbKTmYXV-RUbmxXkCkxuDKD-W7CSkqIXreOXedNk3yaZ_LSpj74"))
 
+(add-to-list 'load-path "~/.emacs.d/manual-packages/prot-eww")
+(require 'prot-eww)
+
 ;; (require 'dashboard)
 ;; (dashboard-setup-startup-hook)
 ;; Or if you use use-package
@@ -1814,7 +1819,7 @@ same directory as the org-buffer and insert a link to this file."
   ;; :height 1.1
   ;; :v-adjust -0.05
   ;; :face 'font-lock-keyword-face))
-  (setq dashboard-projects-switch-function 'counsel-projectile-switch-project-by-name)
+  (setq dashboard-projects-switch-function 'projectile-switch-project-by-name)
   ;;     (add-to-list 'dashboard-items '(agenda) t)
   ;;     (setq dashboard-week-agenda t)
   ;;     (setq dashboard-filter-agenda-entry 'dashboard-no-filter-agenda)
