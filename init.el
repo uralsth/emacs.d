@@ -3,7 +3,7 @@
 (defvar gunner/default-variable-font-size 120)
 
 ;; Make frame transparency overridable
-(defvar gunner/frame-transparency '(85 . 85))
+(defvar gunner/frame-transparency '(92 . 92))
 
 ;; The default is 800 kilobytes.  Measured in bytes.
 (setq gc-cons-threshold (* 50 1000 1000))
@@ -65,6 +65,7 @@
 (straight-use-package 'pyvenv)
 (straight-use-package 'highlight-indent-guides)
 (straight-use-package 'lsp-pyright)
+(straight-use-package 'lsp-java)
 (straight-use-package 'dotnet)
 (straight-use-package 'omnisharp-mode)
 (straight-use-package 'omnisharp)
@@ -86,6 +87,7 @@
 (straight-use-package 'rg)
 (straight-use-package 'php-mode)
 (straight-use-package 'lsp-dart)
+(straight-use-package 'eclim)
 (straight-use-package 'projectile-ripgrep)
 (straight-use-package 'htmlize)
 
@@ -1414,6 +1416,7 @@ same directory as the org-buffer and insert a link to this file."
   (css-mode . lsp)
   (dart-mode . lsp)
   (csharp-mode . lsp)
+  (java-mode . lsp)
   :init
   (defun my/orderless-dispatch-flex-first (_pattern index _total)
     (and (eq index 0) 'orderless-flex))
@@ -1494,6 +1497,15 @@ same directory as the org-buffer and insert a link to this file."
 ;;   (with-eval-after-load "lsp-mode"
 ;;     (add-to-list 'lsp-disabled-clients 'pyls)
 ;;     (add-to-list 'lsp-enabled-clients 'jedi)))
+
+(use-package lsp-java
+  :after java-mode
+  :hook
+  (java-mode . (lambda ()
+                 (require 'lsp-java)
+                 (lsp)))  ; or lsp-deferred
+  (java-mode . eclim-mode)
+  )
 
 (use-package typescript-mode
   :mode "\\.ts\\'"
@@ -1891,6 +1903,8 @@ same directory as the org-buffer and insert a link to this file."
 (setq telega-use-images 't)
 (setq telega-emoji-use-images t)
 
+(setcdr (assq t org-file-apps-gnu) 'browse-url-xdg-open)
+(setq telega-open-file-function 'org-open-file)
 (use-package telega
   :init
   (setq emojify-mode t)
@@ -1902,8 +1916,6 @@ same directory as the org-buffer and insert a link to this file."
   ;; ("\\.pdf\\'" . default) is already member in `org-file-apps'
   ;; Use "xdg-open" to open files by default
   (setq telega-completing-read-function 'completing-read)
-  (setcdr (assq t org-file-apps-gnu) 'browse-url-xdg-open)
-  (setq telega-open-file-function 'org-open-file)
   )
 ;; (setq telega-user-use-avatars nil
 ;; telega-use-tracking-for '(any pin unread)
